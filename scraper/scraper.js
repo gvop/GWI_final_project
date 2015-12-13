@@ -51,31 +51,49 @@ function itvIplayer(body) {
   $(".width--one-half").each(function(){
     var data = {}
     data.network           = "ITV"
-
     data.title             = $(this).children("a").children("article").children("div").children("header").children("h2").text()
-
     data.synopsis          = $(this).children("a").children("article").children("div").children("header").children("h2").text()
-
     data.url               = $(this).children("a.complex-link").attr("href")
-
     data.image             = $(this).children("a").children("article").children("div").children("div").children("noscript").children(".fluid-media__media").attr("src")
-
     data.availability      = "N/A"
-
     data.broadcastDate     = $(this).children("a").children("article").children("div").children("header").children("p").children("time").text() 
 
-    console.log(data.broadcastDate)
+    // console.log(data.broadcastDate)
+    databasePost(data)
+  })
+}
+
+function channel4Iplayer(body) {
+  var $     = cheerio.load(body);
+  $(".mediaBlockList-blockHolder").each(function(){
+    var prefix  = "http://www.channel4.com/"
+    var suffix  = "/on-demand/"
+    var data    = {}
+
+    var urlFull   = $(this).children("div").children('a').attr("href")
+    var splitUrl  = urlFull.split("?")
+
+
+
+    data.network        = "CHANNEL 4"
+    data.title          = $(this).children("div").children('a').children("div.mediaBlock-bottomOuter").children('a').children('h2').text()
+    data.synopsis       = $(this).children("div").children('a').children("div.mediaBlock-bottomOuter").children('.mediaBlock-top').children('h2').text()
+    data.url            = prefix + splitUrl[0] + suffix
+    // data.image          = $(this).children("div.primary").children("div.r-image").attr("data-ip-src")
+    // data.availability   = $(this).children("div.tertiary").children(".availability").children(".period").attr("title")
+    console.log(data.url)
     // databasePost(data)
   })
 }
 
-////BBC IPLAYER
+//BBC IPLAYER
 // scrape("http://www.bbc.co.uk/iplayer/group/most-popular", bbcIplayer)
 
 //ITV MAIN PAGE
-scrape("http://www.itv.com/", itvIplayer)
+// scrape("http://www.itv.com/", itvIplayer)
 
-
+//CHANNEL 4
+scrape("http://www.channel4.com/programmes", channel4Iplayer)
 
 
 
