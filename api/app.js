@@ -13,6 +13,23 @@ var Content         = require("./models/content")
 
 var scraper         = require("./scraper/scraper")
 
+
+////USER LOGIN
+// var path           = require('path');
+
+// var passport       = require('passport');
+// var cookieParser   = require("cookie-parser");
+
+// var jwt            = require('jsonwebtoken');
+// var expressJWT     = require('express-jwt');
+// var app            = express();
+
+// var config         = require('./config/config');
+// var User           = require('./models/user');
+// var secret         = require('./config/config').secret;
+
+
+
 mongoose.connect(config.database)
 
 // Setup Middleware
