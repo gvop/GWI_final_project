@@ -1,0 +1,14 @@
+body {
+  with: 100%;
+  text-align: center;
+}
+
+li{
+  display: inline-block;
+  width: 30%;
+  margin: 1%;
+}
+
+img {
+  width: 100%;
+}
