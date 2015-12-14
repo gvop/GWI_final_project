@@ -1,5 +1,15 @@
 <ul>
-  <li ng-repeat="user in users.all">
-    {{ user.local.email }}
+  <li ng-repeat="user in users.all" >
+    <button ng-click="users.getUser(user)">{{ user.local.fullname }}</button>
+  </li>
+</ul>
+
+<ul>
+  <p>{{ users.user.local.username }}</p>
+  <li ng-repeat="content in users.user.contents" >
+    <p>{{ content.network }}</p>
+    <a ng-href="{{ content.url }}"><img ng-src="{{ content.image }}"></a>
+    <p>{{ content.title }}</p>
+    <p>{{ content.synopsis }}</p>
   </li>
 </ul>

@@ -7,12 +7,19 @@ function usersIndex(req, res) {
   });
 }
 
+
 function usersShow(req, res){
-  User.findById(req.params.id, function(err, user){
-    if (err) return res.status(404).json({message: 'Something went wrong.'});
-    res.status(200).json({ user: user });
-  });
+  var id = req.params.id;
+
+  User.findById({ _id: id }).populate("contents").exec(function(err, user) {
+    if (err) return res.status(500).send(err);
+    if (!user) return res.status(404).send(err);
+    // console.log(User.contents.title)
+    console.log(user.contents.title)
+    res.status(200).send(user);
+  })
 }
+
 
 function usersUpdate(req, res){
   User.findById(req.params.id,  function(err, user) {

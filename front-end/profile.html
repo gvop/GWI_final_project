@@ -1,5 +1,5 @@
 <div ng-show="users.checkLoggedIn()" class="user-display">
-  <p>{{users.user.contents}}</p>
+  <p>{{users.user.contents[0]}}</p>
   <div class="logged-in-info"><h3>LOGGING AS:</h3></div>
   <div class="logged-in-info"><h2>{{ users.user.local.fullname | uppercase }}</h2></div>
   <div class="logged-in-info"><img ng-src="{{ users.user.local.image }}"></div>

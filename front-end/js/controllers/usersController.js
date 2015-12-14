@@ -10,6 +10,7 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth){
   self.all           = [];
   self.user          = {};
   self.getUsers      = getUsers;
+  self.getUser       = getUser;
   self.register      = register;
   self.login         = login;
   self.logout        = logout;
@@ -24,6 +25,13 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth){
     User.query(function(data){
      return self.all = data.users;
    });
+  }
+
+  function getUser (data){
+   var id = data._id
+   User.get({id : id}, function(data) {
+     return self.user = data
+     });
   }
 
   // Actions to carry once register or login forms have been submitted
