@@ -1,5 +1,5 @@
 angular
-  .module('logging')
+  .module('zine')
   .factory('authInterceptor', AuthInterceptor);
 
 // Like in insomnia this sets the header for our request so API can know we're authorized

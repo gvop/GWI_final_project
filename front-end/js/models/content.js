@@ -1,5 +1,5 @@
 angular
-  .module('logging')
+  .module('zine')
   .factory('Content', Content)
 
 Content.$inject = ['$resource', 'API']
@@ -10,8 +10,8 @@ function Content($resource, API){
     { 'get':       { method: 'GET' },
       'save':      { method: 'POST' },
       'query':     { method: 'GET', isArray: false},
-      // 'remove':    { method: 'DELETE' },
-      // 'delete':    { method: 'DELETE' },
+      'remove':    { method: 'DELETE' },
+      'delete':    { method: 'DELETE' },
     }
   );
 }

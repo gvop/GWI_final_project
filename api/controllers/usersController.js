@@ -55,11 +55,25 @@ function addContent(req,res){
 
 }
 
+function deleteContent(req,res){
+
+  console.log("Guus")
+
+  var userId = req.body.userId
+  var contentId = req.body.contentId
+  User.findByIdAndUpdate({_id: userId }, {$pull: {"contents": contentId }}, function(error){
+    if(error) return res.status(403).send({message: 'Could not add content b/c' + error});
+    return res.status(200).json({message: 'Programm had been deleted of your list'});
+  });
+
+}
+
 
 module.exports = {
-  usersIndex:  usersIndex,
-  usersShow:   usersShow,
-  usersUpdate: usersUpdate,
-  usersDelete: usersDelete,
-  addContent: addContent
+  usersIndex:     usersIndex,
+  usersShow:      usersShow,
+  usersUpdate:    usersUpdate,
+  usersDelete:    usersDelete,
+  addContent:     addContent,
+  deleteContent:  deleteContent
 }

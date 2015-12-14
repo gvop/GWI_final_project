@@ -1,5 +1,5 @@
 angular
-  .module('logging')
+  .module('zine')
   .factory('User', User)
 
 User.$inject = ['$resource', 'API']
@@ -24,6 +24,10 @@ function User($resource, API){
       'addContent': {
         url: API + '/users/addcontent',
         method: "POST" 
+      },
+      'deleteContent': {
+        url: API + '/users/addcontent',
+        method: "PUT" 
       }
     }
   );

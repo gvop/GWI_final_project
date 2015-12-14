@@ -1,5 +1,5 @@
 angular
-  .module('logging', ['ngResource', 'angular-jwt', 'ui.router', 'satellizer'])
+  .module('zine', ['ngResource', 'angular-jwt', 'ui.router', 'satellizer'])
   .constant('API', 'http://localhost:3000/api')
   .config(MainRouter)
   .config(function($httpProvider){
@@ -28,7 +28,8 @@ angular
       })
       .state('profile', {
         url: "/profile",
-        templateUrl: "profile.html"
+        templateUrl: "profile.html",
+        controller: "ContentsController as contents"
       })
       .state('users', {
         url: "/users",

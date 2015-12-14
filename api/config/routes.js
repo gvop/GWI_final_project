@@ -16,7 +16,8 @@ router.route('/api/users')
   .get(usersController.usersIndex)
 
 router.route('/api/users/addcontent') 
-  .post(usersController.addContent) 
+  .post(usersController.addContent)
+  .put(usersController.deleteContent) 
 
 router.route('/api/users/:id')
   .get(usersController.usersShow)

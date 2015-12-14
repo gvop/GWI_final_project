@@ -1,15 +1,14 @@
-<ul>
-  <li ng-repeat="user in users.all" >
-    <button ng-click="users.getUser(user)">{{ user.local.fullname }}</button>
-  </li>
+<div class="row">
+  <div class="col s4 m3 s2" ng-repeat="user in users.all">
+    <userbutton></userbutton>
+  </div>
+</div>
+
+<ul class="row">
+  <p>This is the selection of: {{ users.user.local.username }}</p>
+  <div class="col s12 m4 l3" ng-repeat="content in users.user.contents" >
+    <contentcard></contentcard>
+  </div>
 </ul>
 
-<ul>
-  <p>{{ users.user.local.username }}</p>
-  <li ng-repeat="content in users.user.contents" >
-    <p>{{ content.network }}</p>
-    <a ng-href="{{ content.url }}"><img ng-src="{{ content.image }}"></a>
-    <p>{{ content.title }}</p>
-    <p>{{ content.synopsis }}</p>
-  </li>
-</ul>
+

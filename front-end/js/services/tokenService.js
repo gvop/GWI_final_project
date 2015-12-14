@@ -1,5 +1,5 @@
 angular
-  .module('logging')
+  .module('zine')
   .service('TokenService', TokenService);
 
 TokenService.$inject = ['$window', 'jwtHelper'];
