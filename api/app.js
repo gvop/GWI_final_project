@@ -35,13 +35,13 @@ app.use(passport.initialize());
 app.use(cookieParser());
 require('./config/passport')(passport);
 
-app.use('/api', expressJWT({ secret: secret })
-  .unless({
-    path: [
-      { url: '/api/login', methods: ['POST'] },
-      { url: '/api/register', methods: ['POST'] }
-    ]
-  }));
+// app.use('/api', expressJWT({ secret: secret })
+//   .unless({
+//     path: [
+//       { url: '/api/login', methods: ['POST'] },
+//       { url: '/api/register', methods: ['POST'] }
+//     ]
+//   }));
 
 app.use(methodOverride(function(req, res){
   if (req.body && typeof req.body === "object" && "_method" in req.body){

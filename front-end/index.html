@@ -19,9 +19,9 @@
   <script type="text/javascript" src="./js/services/authInterceptor.js"></script>
   <script type="text/javascript" src="./js/services/currentUser.js"></script>
   <script type="text/javascript" src="./js/models/user.js"></script>
-  <script type="text/javascript" src="./js/models/project.js"></script>
+  <script type="text/javascript" src="./js/models/content.js"></script>
   <script type="text/javascript" src="./js/controllers/usersController.js"></script>
-  <script type="text/javascript" src="./js/controllers/projectsController.js"></script>
+  <script type="text/javascript" src="./js/controllers/contentsController.js"></script>
 
 <!-- Stylesheets -->
 
@@ -36,13 +36,19 @@
     <nav>
 
       <div>
-        <a href="#" class="pure-menu-heading pure-menu-link" ui-sref-active="active" ui-sref="home"><h1>Login</h1></a>
-        <ul class="pure-menu-list">
+        <a href="#"ui-sref-active="active" ui-sref="home"><h1>Home</h1></a>
+
+        <ul>
           <li ng-hide="users.checkLoggedIn()"><a href="#" ui-sref-active="active" ui-sref="login">Login</a></li>
+
           <li ng-hide="users.checkLoggedIn()" ><a href="#" ui-sref-active="active" ui-sref="register">Register</a></li>
+
           <li ng-show="users.checkLoggedIn()" ><a href="#" ui-sref-active="active" ui-sref="profile">My Profile</a></li>
+
           <li ng-show="users.checkLoggedIn()" ><a href="#" ui-sref-active="active" ui-sref="users">Users</a></li>
-          <li ng-show="users.checkLoggedIn()" ><a href="#" ui-sref-active="active" ui-sref="projects">Content</a></li>
+
+          <li ng-show="users.checkLoggedIn()" ><a href="#" ui-sref-active="active" ui-sref="home">Content</a></li>
+          
           <li ng-show="users.checkLoggedIn()" ><a href="#" ui-sref="home" ng-click="users.logout()">Logout</a></li>
         </ul>
       </div>

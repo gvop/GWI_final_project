@@ -1,7 +1,22 @@
 <div ng-show="users.checkLoggedIn()">
-  <div><img src="./assets/images/lock.png"></div>
+  <h1>Content</h1>
+
+  <div class="message">
+  <h3>Here is a message</h3>
+    {{users.message}}
+  </div>
+
+  <ul>
+    <li ng-repeat="content in contents.all">
+      <p>{{ content.network }}</p>
+      <a ng-href="{{ content.url }}"><img ng-src="{{ content.image }}"></a>
+      <p>{{ content.title }}</p>
+      <p>{{ content.synopsis }}</p>
+      <button ng-click="contents.add(content._id)">add to my list</button>
+    </li>
+  </ul>
 </div>
 
 <div ng-hide="users.checkLoggedIn()">
-  <div><img src="./assets/images/locked.png"></div>
+  <h2>Login to start watching!</h2>
 </div>

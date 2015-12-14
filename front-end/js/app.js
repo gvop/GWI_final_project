@@ -15,7 +15,8 @@ angular
     $stateProvider
       .state('home', {
         url: "/",
-        templateUrl: "home.html"
+        templateUrl: "home.html",
+        controller: "ContentsController as contents"
       })
       .state('login', {
         url: "/login",
@@ -33,11 +34,11 @@ angular
         url: "/users",
         templateUrl: "users.html"
       })
-      .state('projects', {
-        url: "/projects",
-        templateUrl: "projects.html",
-        controller: "ProjectsController as projects"
-      })
+      // .state('content', {
+      //   url: "/content",
+      //   templateUrl: "content.html",
+      //   controller: "ContentsController as contents"
+      // })
 
     $urlRouterProvider.otherwise("/");
   }
