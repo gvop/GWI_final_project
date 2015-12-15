@@ -2,8 +2,14 @@ body {
 
 }
 
+nav {
+  background: white;
+  color: black;
+}
+
 nav ul a {
   padding: 1rem 15px;
+  color: black;
 }
 
 .showroom {

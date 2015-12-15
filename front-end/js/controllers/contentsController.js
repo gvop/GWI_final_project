@@ -1,15 +1,17 @@
 angular
 .module('zine')
-.controller('ContentsController', ContentsController);
+.controller('ContentsController', ContentsController)
 
 ContentsController.$inject = ["Content", "User", "CurrentUser", "TokenService", "$window"]
 function ContentsController(Content, User, CurrentUser, TokenService, $window){
   var self = this;
 
-  self.all          = [];
-  self.users        = [];
-  self.content      = {}; 
-  self.userContent  = [];
+  self.all            = [];
+  self.users          = [];
+  self.contents       = [];
+  self.userContent    = [];
+  self.commentText    = "";
+  self.contentComment = [];
 
   self.getContents = function(){
     Content.query(function(data){
@@ -17,23 +19,18 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window){
     })
   }
 
-  self.popup = function(content){
-    $('#popup_content').empty();
-    $.getJSON('http://en.wikipedia.org/w/api.php?action=parse&format=json&callback=?', {page:content.title, prop:'text', uselang:'en'}, function(data){ 
-      $('#popup_content').append(data.parse.text['*']);
-    });
-
-    
-
-    console.log(content)
-    $('#modal1').openModal();
-  }
+  self.popup = function(index){
+    // $('#popup_content').empty();
+    // $.getJSON('http://en.wikipedia.org/w/api.php?action=parse&format=json&callback=?', {page:content.title, prop:'text', uselang:'en'}, function(data){ 
+    //   $('#popup_content').append(data.parse.text['*']);
+    // });
+$('#popop_'+ index).openModal();
+}
 
   //IF CURRENT USER INFO
   if ($window.localStorage['auth-token']) {
     self.creator = TokenService.parseJwt();
   }
-
 
   self.getUsers = function(){
    User.query(function(data){
@@ -41,38 +38,61 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window){
   });
  }
 
- self.add = function(data){
+
+//ADD PROGRAMM TO PLAYLIST
+self.add = function(data){
+
+  console.log(self.creator.contents)
+
   var title     = data.title
   var userId    = self.creator._id
   var contentId = data._id
 
   var data = {
     userId: userId,
-    contentId: contentId
+    contentId: contentId 
   }
-
 
   User.addContent(data, function(data){
-
-    Materialize.toast(title + " <br> is added to your watchlist!", 4000)
+    self.creator.contents.push(contentId)
+    Materialize.toast(title + data.message, 4000)
   })
 }
 
-self.remove = function(id){
-  var userId    = self.creator._id
-  var contentId = id
+
+//REMOVE PROGRAMM FOR UR LIST
+self.remove = function(content){
+ $(event.target.parentElement.parentElement).hide();
+ 
+ var data = {
+  userId: self.creator._id,
+  contentId: content._id
+}
+
+User.deleteContent(data, function(data){
+  Materialize.toast(content.title + " " + data.message, 4000)
+})
+}
+
+
+//ADD A COMMENT TO A PROGRAMM
+self.addComment = function(content){
+
+  var comment = self.commentText;
 
   var data = {
-    userId: userId,
-    contentId: contentId
+    comment   : self.commentText,
+    user      : self.creator._id
+    // contentId : content._id
   }
 
-  console.log(data)
-
-  User.deleteContent(data, function(data){
-
+  Content.addComment({id: content._id}, data, function(data){
+    Materialize.toast(data.message, 4000)
+    self.commentText = " ";
+    $('#commentbox').append("<p>"+ comment +"</p>")
   })
 }
+
 
 self.getContents();
 self.getUsers();

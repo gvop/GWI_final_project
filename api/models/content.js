@@ -1,5 +1,6 @@
-var mongoose      = require("mongoose")
-var findOrCreate  = require("mongoose-findorcreate")
+var mongoose      = require("mongoose");
+var findOrCreate  = require("mongoose-findorcreate");
+var Comment       = require('./comment');
 
 var contentSchema    = mongoose.Schema({
   network:String,
@@ -7,7 +8,8 @@ var contentSchema    = mongoose.Schema({
   synopsis: String,
   url: String,
   image: String,
-  availability: String
+  availability: String,
+  comments: [Comment.schema]
 })
 
 contentSchema.plugin(findOrCreate)

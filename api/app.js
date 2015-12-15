@@ -12,6 +12,9 @@ var Content         = require("./models/content")
 //SCRAPER
 // var scraper         = require("./scraper/scraper")
 
+//SOCKET.IO
+
+
 ////USER LOGIN
 var path           = require('path');
 var passport       = require('passport');
@@ -21,8 +24,6 @@ var expressJWT     = require('express-jwt');
 var app            = express();
 var User           = require('./models/user');
 var secret         = require('./db/config').secret;
-
-
 
 mongoose.connect(config.database)
 
@@ -54,8 +55,13 @@ app.use(methodOverride(function(req, res){
 app.use(routes);
 
 
-app.listen(process.env.PORT || 3000);
+var server = app.listen(process.env.PORT || 3000);
 console.log("Express is alive and listening.")
+var io = require('socket.io').listen(server);
 
+app.post("/content", function(request, response) {
+  console.log("Sockettttttt!")
+
+});
 
 

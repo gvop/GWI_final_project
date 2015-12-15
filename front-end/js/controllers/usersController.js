@@ -2,8 +2,8 @@ angular
   .module('zine')
   .controller('UsersController', UsersController);
 
-UsersController.$inject = ['User', 'TokenService', '$state', 'CurrentUser', '$auth'];
-function UsersController(User, TokenService, $state, CurrentUser, $auth){
+UsersController.$inject = ['User', 'TokenService', '$state', 'CurrentUser', '$auth', "$window"];
+function UsersController(User, TokenService, $state, CurrentUser, $auth, $window){
 
   var self = this;
 
@@ -15,11 +15,16 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth){
   self.login         = login;
   self.logout        = logout;
   self.checkLoggedIn = checkLoggedIn;
+  self.getProfile    = getProfile;
 
 
   self.authenticate = function(provider) {
     $auth.authenticate(provider);
   };
+
+  if ($window.localStorage['auth-token']) {
+    self.creator = TokenService.parseJwt();
+  }
 
   // GETs all the users from the api
   function getUsers() {
@@ -33,6 +38,10 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth){
    User.get({id : id}, function(data) {
      return self.user = data
      });
+  }
+
+  function getProfile(){
+    return getUser(self.creator)
   }
 
   // Actions to carry once register or login forms have been submitted

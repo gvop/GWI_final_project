@@ -2,12 +2,17 @@ var express  = require('express');
 var router   = express.Router();
 var passport = require("passport");
 
-var contentController = require('../controllers/contentController');
-var usersController = require('../controllers/usersController');
+var contentController         = require('../controllers/contentController');
+var commentController         = require('../controllers/commentController');
+var usersController           = require('../controllers/usersController');
 var authenticationsController = require('../controllers/authenticationsController');
 
 router.route('/api/content')
   .get(contentController.contentsIndex)
+
+router.route('/api/content/:id/comments')
+  .get(commentController.commentIndex)
+  .put(commentController.addComment)
 
 router.post('/api/login', authenticationsController.login);
 router.post('/api/register', authenticationsController.register);
