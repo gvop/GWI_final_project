@@ -5,7 +5,7 @@
       <h2>Showroom</h2>   
     </div>
 
-    <div class="col s12 m4 l3" ng-repeat="content in contents.all">
+    <div class="col s12 m4 l3" ng-repeat="content in contents.all | filter: 'homeland'">
 
       <contentcard></contentcard>
 

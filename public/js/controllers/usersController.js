@@ -2,8 +2,8 @@ angular
   .module('zine')
   .controller('UsersController', UsersController);
 
-UsersController.$inject = ['User', 'TokenService', '$state', 'CurrentUser', '$auth', "$window"];
-function UsersController(User, TokenService, $state, CurrentUser, $auth, $window){
+UsersController.$inject = ['User', 'TokenService', '$state', 'CurrentUser', '$auth', "$window", "socket"];
+function UsersController(User, TokenService, $state, CurrentUser, $auth, $window, socket){
 
   var self = this;
 
@@ -49,11 +49,14 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
     var token = res.token ? res.token : null;
     if (token) {
       self.getUsers();
+      self.user = TokenService.decodeToken();
+      CurrentUser.saveUser(self.user)
+      socket.emit("login", self.user);
       $state.go('home');
     }
     // console.log(res);
-    self.user = TokenService.decodeToken();
-    CurrentUser.saveUser(self.user)
+    // self.user = TokenService.decodeToken();
+    // CurrentUser.saveUser(self.user)
   }
 
   // POSTS the new user to register to the API
