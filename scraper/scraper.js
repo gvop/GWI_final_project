@@ -26,7 +26,7 @@ function databasePost(data){
         image:    data.image,
         availability: data.availability }, function(err, link, created) {
     if (err) return console.log("There was an error saving "  + err.errmsg);
-    if (created) return console.log("New programms have beeing added");
+    if (created) return console.log(data.network + " new programms have beeing added");
     Content.findByIdAndUpdate(link._id, data, function(err, link) {
       if (err) return console.log("There was an error updating"  + err.errmsg);
       return console.log("Database updated");
@@ -68,9 +68,7 @@ function itvIplayer(body) {
     data.availability      = "N/A"
 
     // data.broadcastDate     = $(this).children("a").children("article").children("div").children("header").children("p").children("time").text() 
-
-    console.log(data.image)
-
+    
     databasePost(data)
   })
 }

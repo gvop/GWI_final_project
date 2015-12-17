@@ -1,10 +1,13 @@
 <nav>
-  <ul>
-    <li ng-hide="users.checkLoggedIn()"><a href="#" ui-sref-active="active" ui-sref="login">Login</a></li>
-    <li ng-hide="users.checkLoggedIn()" ><a href="#" ui-sref-active="active" ui-sref="register">Register</a></li>
-    <li ng-show="users.checkLoggedIn()" ><a href="#" ui-sref-active="active" ui-sref="profile">My Profile</a></li>
-    <li ng-show="users.checkLoggedIn()" ><a href="#" ui-sref-active="active" ui-sref="users">Users</a></li>
-    <li ng-show="users.checkLoggedIn()" ><a href="#" ui-sref-active="active" ui-sref="home">Content</a></li>
-    <li ng-show="users.checkLoggedIn()" ><a href="#" ui-sref="home" ng-click="users.logout()">Logout</a></li>
+  <ul class="row">
+    <li class="col s12 m2 l1" ng-hide="users.checkLoggedIn()"><a href="#"  ui-sref="login">Login</a></li>
+    <li class="col s12 m2 l1" ng-hide="users.checkLoggedIn()" ><a href="#" ui-sref="register">Register</a></li>
+
+    <li class="col s12 m2 l1" ng-show="users.checkLoggedIn()" ><a href="#" ui-sref="home">Content</a></li>
+    <li class="col s12 m2 l1" ng-show="users.checkLoggedIn()" ><a href="#" ui-sref="users">Users</a></li>
+
+    <li class="col s12 m2 l1 offset-l8 offset-m4" ng-show="users.checkLoggedIn()" ><a href="#" ui-sref="profile">My Stuff</a></li>
+    <li class="col s12 m2 l1" ng-show="users.checkLoggedIn()" ><a href="#" ui-sref="home" ng-click="users.logout()">Logout</a></li>
   </ul>
 </nav>
+

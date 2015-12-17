@@ -28,6 +28,10 @@ function User($resource, API){
       'deleteContent': {
         url: API + '/users/addcontent',
         method: "PUT" 
+      },
+      'addFriend': {
+        url: API + '/users/friends',
+        method: "PUT" 
       }
     }
   );

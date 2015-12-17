@@ -1,11 +1,7 @@
-<div ng-click="users.getUser(user)" class="card-panel grey lighten-5 z-depth-1">
-  <div class="row valign-wrapper">
-    <div class="col s12">
-      <span class="black-text">
-        <p>{{ user.local.fullname }}</p> 
-      </span>
-    </div>
+<div>
+  <div class="chip" ng-click="users.getUser(user)" >
+    <!--     <img ng-src="{{ user.local.image }}" alt="Contact Person"> -->
+    {{ user.local.fullname }}
   </div>
+  <span ng-click="users.addFriend(user)">**follow</span>
 </div>
-
-

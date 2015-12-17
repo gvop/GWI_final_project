@@ -11,12 +11,12 @@ function usersIndex(req, res) {
 function usersShow(req, res){
   var id = req.params.id;
 
-  User.findById({ _id: id }).populate("contents").exec(function(err, user) {
+  User.findById({ _id: id }).populate(["contents","friends"]).exec(function(err, references) {
     if (err) return res.status(500).send(err);
-    if (!user) return res.status(404).send(err);
+    if (!references) return res.status(404).send(err);
     // console.log(User.contents.title)
-    console.log(user.contents.title)
-    res.status(200).send(user);
+    // console.log(references.contents.title)
+    res.status(200).send(references);
   })
 }
 
@@ -67,6 +67,18 @@ function deleteContent(req,res){
 
 }
 
+function addFriend(req,res){
+
+  var userId    = req.body.user._id
+
+  var friendId  = req.body.friend._id
+
+  User.findByIdAndUpdate({_id: userId }, {$push: {"friends": friendId }}, function(error, user){
+    if(error) return res.status(403).send({message: 'Could not add friend b/c' + error});
+    return res.status(200).json({message: 'has been added to your list', user:user});
+  });
+}
+
 
 module.exports = {
   usersIndex:     usersIndex,
@@ -74,5 +86,6 @@ module.exports = {
   usersUpdate:    usersUpdate,
   usersDelete:    usersDelete,
   addContent:     addContent,
-  deleteContent:  deleteContent
+  deleteContent:  deleteContent,
+  addFriend:      addFriend
 }

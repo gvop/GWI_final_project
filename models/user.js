@@ -9,7 +9,8 @@ var userSchema = mongoose.Schema({
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true }
   },
-  contents: [{ type: mongoose.Schema.ObjectId, ref: 'Content' }]
+  contents: [{ type: mongoose.Schema.ObjectId, ref: 'Content' }],
+  friends: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
 });
 
 userSchema.statics.encrypt = function(password) {

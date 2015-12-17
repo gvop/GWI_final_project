@@ -1,5 +1,5 @@
 body {
-
+  background: #252525;
 }
 
 nav {
@@ -21,6 +21,7 @@ img {
 }
 
 h1,h2,h3,h4,h5,h6,body {
+  color: #F5F7FC;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -29,6 +30,53 @@ h2 {
   margin: 1rem 0;
 }
 
+.no-padding,
 .card-content {
   padding: 0 !important;
 }
+
+.all-left {
+  left: 0px !important;
+}
+
+.top-margin{
+  margin-top: 2rem !important;
+}
+
+
+/*WIKIPEDIA INFO*/
+.color-black,
+#popop_1_info{
+  line-height: 1.8rem;
+}
+
+.color-black a,
+#popop_1_info a{
+  color: black !important;
+  margin-right: 0px !important;
+}
+
+.color-black h2,
+.color-black li,
+.reflist,
+.reference{
+  display: none !important;
+}
+
+.user-button{
+  display: inline-block;
+  margin: .6rem .7rem;
+  cursor: pointer;
+}
+
+.row {
+  margin-bottom: 0px;
+}
+
+nav {
+  height: 100%;
+}
+
+
+
+

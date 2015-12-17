@@ -12,18 +12,37 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
   self.userContent    = [];
   self.commentText    = "";
   self.contentComment = [];
+  self.searchText     = "";
+  self.sortBy         = "";
+  self.show           = true;
+
 
   self.getContents = function(){
     Content.query(function(data){
+      $('.slider').slider({full_width: true});
+      userStartUpSift()
       return self.all = data.content;
     })
   }
 
-  self.popup = function(index){
+  self.popup = function(index,content){
     // $('#popup_content').empty();
-    // $.getJSON('http://en.wikipedia.org/w/api.php?action=parse&format=json&callback=?', {page:content.title, prop:'text', uselang:'en'}, function(data){ 
-    //   $('#popup_content').append(data.parse.text['*']);
-    // });
+    console.log(content.network)
+    if(content.network === "BBC") {
+      $('#popop_'+ index + "_info").append(content.synopsis)
+    } else {
+      $.getJSON('http://en.wikipedia.org/w/api.php?action=parse&format=json&callback=?', {page:content.title, prop:'text', uselang:'en'}, function(data){ 
+        var splitText = "<p><i><b>"
+        var str = data.parse.text['*']
+        var res = str.split(splitText);
+        var splitTextTwo  = '<div id="toc" class="toc">'
+        var strTwo        = res[1]
+        var resTwo        = strTwo.split(splitTextTwo);
+        console.log(resTwo[0])
+        $('#popop_'+ index + "_info").append(resTwo[0])
+      });
+    }
+
     $('#popop_'+ index).openModal();
   }
 
@@ -53,6 +72,8 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
     }
 
     User.addContent(data, function(data){
+      // $("#content_" + contentId).css('visibility','hidden')
+      $("#content_" + contentId).replaceWith( "<p>On your playlist!</p>" );
       self.creator.contents.push(contentId)
       Materialize.toast(title + data.message, 4000)
     })
@@ -61,7 +82,7 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
   //REMOVE PROGRAMM FOR UR LIST
   self.remove = function(content){
     $(event.target.parentElement.parentElement).hide();
-   
+
     var data = {
       userId: self.creator._id,
       contentId: content._id
@@ -73,7 +94,8 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
   }
 
   //ADD A COMMENT TO A PROGRAMM
-  self.addComment = function(content){
+  self.addComment = function(content, id){
+    console.log(id)
     var comment = self.commentText;
 
     var data = {
@@ -85,27 +107,43 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
     Content.addComment({id: content._id}, data, function(data){
       Materialize.toast(data.message, 4000)
       self.commentText = " ";
-      $('#commentbox').append("<p>"+ comment +"</p>")
-
+      $('#commentbox_' + id).append("<p>"+ comment +"</p>")
+      console.log("line 109")
       // socket.emit("comment-added", comment);
-      socket.emit("interested-channel", content)
+      // socket.emit("interested-channel", content);
     })
   }
+
+  function userStartUpSift(){
+    var id = self.creator._id
+    User.get({id : id}, function(data) {
+      console.log(data.contents)
+      for(i = 0; i < data.contents.length; i++){
+        var id = data.contents[i]._id
+        $("#content_" + id).replaceWith( "<p>On your playlist!</p>" );
+      }
+    });
+  }
+
+  self.startSlider = function(){
+    $('.slider').slider({full_width: true});
+  }
+
 
   self.getContents();
   self.getUsers();
 
-  // console.log(CurrentUser.getUser());
 
-  socket.on("connect", function(){
-    console.log("connected")
-  })
+  // socket.on("connect", function(){
+  //   console.log("connected")
+  // })
 
-  socket.on("everyone-apart-from-me", function(data) {
-    Materialize.toast(data, 4000);
-  })
+  // socket.on("everyone-apart-from-me", function(data) {
+  //   console.log(data)
+  //   Materialize.toast(data, 4000);
+  // })
 
-  socket.on("message", function(data) {
-    Materialize.toast(data, 4000);
-  })
+  // socket.on("message", function(data) {
+  //   Materialize.toast(data, 4000);
+  // })
 }

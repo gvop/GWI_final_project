@@ -2,35 +2,42 @@
     <div class="card-content white-text">
       <!--           <span class="card-title">{{ content.title }}</span> -->
 
-      <img ng-click="contents.popup($index)" ng-src="{{ content.image }}">
+      <img ng-click="contents.popup($index, content)" ng-src="{{ content.image }}">
 
     </div>
     <div class="card-action">
       <a class="truncate" ng-href="{{ content.url }}">{{ content.title }}</a>
       <br>
-      <p ng-click="contents.add(content)">Add to my list</p> 
+      <div id="content_{{content._id}}">
+        <p ng-click="contents.add(content, $index)">Add to my list {{content.comments.length}}</p> 
+      </div>
 
       <div id="popop_{{$index}}" class="modal modal-fixed-footer">
-        <div id="commentbox" class="modal-content">
+        <div id="commentbox_{{$index}}" class="modal-content">
 
           <h2>{{ content.title }}</h2>
 
-          <form class="col s12" ng-submit="contents.addComment(content)">
-            <div class="input-field col s12">
-              <label for="textarea1">Comment</label>
+          <form class="col s12 no-padding" ng-submit="contents.addComment(content,$index)">
+            <div class="input-field col s12 no-padding">
+              <label  class="no-padding all-left" for="textarea1">Comment</label>
               <input type="text" ng-model="contents.commentText" name="commentText"/>
-              <input type="submit" id="submit" value="Submit" />
+              <input class="btn" type="submit" id="submit" value="Comment" />
             </div>
           </form>
 
+          <div class="col s12 top-margin no-padding">
+            <h2 class="all-left">Comments</h2>
+            <p class="all-left" ng-repeat="comment in content.comments">{{ comment.comment }}</p>
+          </div>
 
-          <h2>Comments</h2>
-          <p ng-repeat="comment in content.comments">{{ comment.comment }}</p>
+          <div id="popop_{{$index}}_info" class="color-black"></div>
 
         </div>
+
         <div class="modal-footer">
           <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
         </div>
+
       </div>
 
     </div>

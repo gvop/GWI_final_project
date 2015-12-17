@@ -1,21 +1,23 @@
 angular
-  .module('zine')
-  .controller('UsersController', UsersController);
+.module('zine')
+.controller('UsersController', UsersController);
 
 UsersController.$inject = ['User', 'TokenService', '$state', 'CurrentUser', '$auth', "$window", "socket"];
 function UsersController(User, TokenService, $state, CurrentUser, $auth, $window, socket){
 
   var self = this;
 
-  self.all           = [];
-  self.user          = {};
-  self.getUsers      = getUsers;
-  self.getUser       = getUser;
-  self.register      = register;
-  self.login         = login;
-  self.logout        = logout;
-  self.checkLoggedIn = checkLoggedIn;
-  self.getProfile    = getProfile;
+  self.all                  = [];
+  self.user                 = {};
+  self.getUsers             = getUsers;
+  self.getUser              = getUser;
+  self.register             = register;
+  self.login                = login;
+  self.logout               = logout;
+  self.checkLoggedIn        = checkLoggedIn;
+  self.getProfile           = getProfile;
+  self.addFriend            = addFriend;
+  self.sendMessageToFriend  = sendMessageToFriend;
 
 
   self.authenticate = function(provider) {
@@ -37,12 +39,12 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
    var id = data._id
    User.get({id : id}, function(data) {
      return self.user = data
-     });
-  }
+   });
+ }
 
-  function getProfile(){
-    return getUser(self.creator)
-  }
+ function getProfile(){
+  return getUser(self.creator)
+}
 
   // Actions to carry once register or login forms have been submitted
   function handleLogin(res) {
@@ -83,6 +85,79 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
     return loggedIn;
   }
 
+  function addFriend(friend,user){
+
+    if(friend._id == self.creator._id) return  Materialize.toast("Are you not friend with yourself?", 4000);
+
+    var data = {
+      friend : friend,
+      user: self.creator
+    }
+
+    User.addFriend(data, function(){
+      console.log(data.user)
+      self.user = data.user;
+    })
+
+  }
+
+
+
+function sendMessageToFriend(friend,message){
+  console.log(friend)
+
+  var messagePackage = {
+    friend : friend._id,
+    message: message
+  }
+
+  socket.emit("message-friend", messagePackage);
+
+  Materialize.toast("Send message: " + message + " to: " + friend.local.username , 4000)
+  $(".message").val(function() {
+    return this.defaultValue;
+  });
+
+}
+
+socket.on("message-to-friend", function(data) {
+  console.log(data)
+})
+
+socket.on("connect", function(){
+  console.log("connected")
+})
+
+socket.on("subscribed", function(){
+  console.log(socket);
+})
+
+  // socket.on("message-to-friend", function(data) {
+  //   console.log(data)
+  //   Materialize.toast(data, 4000);
+  // })
+
+
+  // socket.on("everyone-apart-from-me", function(data) {
+  //   console.log(data)
+  //   Materialize.toast(data, 4000);
+  // })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // Checks if the user is logged in, runs every time the page is loaded
   if (CurrentUser.getUser()) {
     self.getUsers();
@@ -90,5 +165,5 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
     // console.log(self.user);
   }
 
-return self
+  return self
 }

@@ -14,7 +14,7 @@ var server          = http.createServer(app);
 var port            = process.env.PORT || 3000;
 
 //SCRAPER
-// var scraper         = require("./scraper/scraper")
+var scraper         = require("./scraper/scraper")
 
 ////USER LOGIN
 var path           = require('path');
@@ -67,26 +67,34 @@ app.get("/", function(req, res) {
 server.listen(port);
 console.log('Server started on ' + port);
 
+
 // Integrate socket
 var io = require('socket.io')(server);
 
 io.on("connect", function(socket){
 
   socket.on("login", function(user){
-    user.contents.forEach(function(content){
-      socket.join(content);
-      console.log(content + " was joined...")
+    user.join(user._id)
+    user.friends.forEach(function(friend){
+      socket.join(friend);
+      console.log(friend + " was joined...")
     })
+    io.emit("subscribed")
   })
 
-  socket.on("comment-added", function(data){
-    console.log(data);
-    socket.broadcast.emit("everyone-apart-from-me", data)
+  socket.on("message-friend", function(data){
+    console.log("message-friend:" + data.friend)
+    // socket.broadcast.to(socketid).emit('message', 'for your eyes only');
+    socket.broadcast.to(data.friend._id).emit('message-to-friend', data);
   })
 
-  socket.on("interested-channel", function(content) {
-    socket.broadcast.to(content._id).emit('message', 'nice game');
-  })
+  // socket.on("comment-added", function(data){
+  //   socket.broadcast.emit("everyone-apart-from-me", data)
+  // })
+
+  // socket.on("interested-channel", function(content) {
+  //   socket.broadcast.to(content._id).emit('message', "koek koek");
+  // })
 });
 
 // // sending to sender-client only
