@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="user-button" ng-repeat="user in users.all">
+  <div class="user-button" ng-repeat="user in users.all" data-ng-init="users.checkFriends()">
     <userbutton></userbutton>
   </div>
 </div>

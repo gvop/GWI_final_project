@@ -1,7 +1,12 @@
 <div>
+
   <div class="chip" ng-click="users.getUser(user)" >
     <!--     <img ng-src="{{ user.local.image }}" alt="Contact Person"> -->
     {{ user.local.fullname }}
+    <i id="follow_{{user._id}}" ng-click="users.addFriend(user)"class="fa fa-user-plus"></i>
   </div>
-  <span ng-click="users.addFriend(user)">**follow</span>
+
+  
+
 </div>
+

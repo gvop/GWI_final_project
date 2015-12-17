@@ -20,23 +20,25 @@
 
         </div>
       </div>
-
-      <div class="col s12" ng-repeat="friend in users.user.friends">
-
-        <p>{{friend.local.fullname}}<span class="message_button">*message</span></p>
-
-        <form class="col s12 no-padding" ng-submit="users.sendMessageToFriend(friend, messageText)">
-          <div class="input-field col s12 no-padding">
-            <label  class="no-padding all-left" for="textarea1">Comment</label>
-            <input  class="message" type="text" ng-model="messageText" name="messageText"/>
-            <input  class="btn"     type="submit" id="submit" value="Send Message" />
-          </div>
-        </form>
-
-      </div>
+    </div>
 
 
+    <div class="col s12 m3" ng-repeat="friend in users.user.friends">
+
+      <p>{{friend.local.fullname}}<span class="message_button">*message</span></p>
+
+      <form class="col s12 no-padding" ng-submit="users.sendMessageToFriend(friend, messageText)">
+        <div class="input-field col s12 no-padding">
+          <label  class="no-padding all-left" for="textarea1">Comment</label>
+          <input  class="message" type="text" ng-model="messageText" name="messageText"/>
+          <input  class="btn"     type="submit" id="submit" value="Send Message" />
+        </div>
+      </form>
 
     </div>
+
+
+
+
   </div>
 </div>

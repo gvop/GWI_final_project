@@ -17,6 +17,7 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
   self.show           = true;
 
 
+  //GET CONTENT ON THE PAGE
   self.getContents = function(){
     Content.query(function(data){
       $('.slider').slider({full_width: true});
@@ -25,6 +26,7 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
     })
   }
 
+  //CREATING PROGRAM INFO POPUP
   self.popup = function(index,content){
     // $('#popup_content').empty();
     console.log(content.network)
@@ -51,6 +53,7 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
     self.creator = TokenService.parseJwt();
   }
 
+  //GET ALL USERS ON A PAGE
   self.getUsers = function(){
     User.query(function(data){
       return self.users = data.users;
@@ -114,10 +117,10 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
     })
   }
 
+  //SHOWING WHATS ON YOUR PLAYLIST AND WHAT NOT
   function userStartUpSift(){
     var id = self.creator._id
     User.get({id : id}, function(data) {
-      console.log(data.contents)
       for(i = 0; i < data.contents.length; i++){
         var id = data.contents[i]._id
         $("#content_" + id).replaceWith( "<p>On your playlist!</p>" );

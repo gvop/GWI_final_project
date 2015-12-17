@@ -8,6 +8,7 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
   var self = this;
 
   self.all                  = [];
+  self.friends              = [];
   self.user                 = {};
   self.getUsers             = getUsers;
   self.getUser              = getUser;
@@ -18,6 +19,7 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
   self.getProfile           = getProfile;
   self.addFriend            = addFriend;
   self.sendMessageToFriend  = sendMessageToFriend;
+  self.checkFriends         = checkFriends;
 
 
   self.authenticate = function(provider) {
@@ -39,12 +41,24 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
    var id = data._id
    User.get({id : id}, function(data) {
      return self.user = data
-   });
- }
+    });
+  }
 
  function getProfile(){
   return getUser(self.creator)
-}
+  }
+
+  function checkFriends(){
+    var id = self.creator._id
+    User.get({id : id}, function(data) {
+      for(i = 0; i < data.friends.length; i++){
+        var id = data.friends[i]._id
+        $("#follow_" + id).hide();
+      }
+    });
+
+  }
+
 
   // Actions to carry once register or login forms have been submitted
   function handleLogin(res) {
@@ -85,7 +99,12 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
     return loggedIn;
   }
 
-  function addFriend(friend,user){
+
+  function addFriend(friend){
+    friendId  = friend._id
+    id        = self.creator._id;
+
+    $("#follow_" + friend._id).hide()
 
     if(friend._id == self.creator._id) return  Materialize.toast("Are you not friend with yourself?", 4000);
 
@@ -95,42 +114,45 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
     }
 
     User.addFriend(data, function(){
-      console.log(data.user)
-      self.user = data.user;
+      return  Materialize.toast("Added as friend!", 4000);
     })
+    }
+
+
+
+  function sendMessageToFriend(friend,message){
+    console.log(friend)
+
+    var messagePackage = {
+      friend : friend._id,
+      message: message
+    }
+
+    socket.emit("message-friend", messagePackage);
+
+    Materialize.toast("Send message: " + message + " to: " + friend.local.username , 4000)
+    $(".message").val(function() {
+      return this.defaultValue;
+    });
 
   }
 
+  socket.on("message-to-friend", function(data) {
+    console.log(data)
+  })
+
+  socket.on("connect", function(){
+    console.log("connected")
+  })
+
+  socket.on("subscribed", function(){
+    console.log(socket);
+  })
 
 
-function sendMessageToFriend(friend,message){
-  console.log(friend)
 
-  var messagePackage = {
-    friend : friend._id,
-    message: message
-  }
 
-  socket.emit("message-friend", messagePackage);
 
-  Materialize.toast("Send message: " + message + " to: " + friend.local.username , 4000)
-  $(".message").val(function() {
-    return this.defaultValue;
-  });
-
-}
-
-socket.on("message-to-friend", function(data) {
-  console.log(data)
-})
-
-socket.on("connect", function(){
-  console.log("connected")
-})
-
-socket.on("subscribed", function(){
-  console.log(socket);
-})
 
   // socket.on("message-to-friend", function(data) {
   //   console.log(data)
