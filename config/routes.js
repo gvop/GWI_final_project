@@ -25,7 +25,8 @@ router.route('/api/users/addcontent')
   .put(usersController.deleteContent) 
 
 router.route('/api/users/friends') 
-  .put(usersController.addFriend) 
+  .post(usersController.addFriend) 
+  .put(usersController.deleteFriend) 
 
 router.route('/api/users/:id')
   .get(usersController.usersShow)

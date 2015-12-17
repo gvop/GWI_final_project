@@ -31,6 +31,10 @@ function User($resource, API){
       },
       'addFriend': {
         url: API + '/users/friends',
+        method: "POST" 
+      },
+      'deleteFriend': {
+        url: API + '/users/friends',
         method: "PUT" 
       }
     }

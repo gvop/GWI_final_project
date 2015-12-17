@@ -5,8 +5,7 @@ angular
 SocketFactory.$inject = ["$rootScope"];
 function SocketFactory($rootScope) {
   var socket = io.connect();
-  console.log(socket);
-  
+
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {  
@@ -25,6 +24,9 @@ function SocketFactory($rootScope) {
           }
         });
       })
+    },
+    socket: function() {
+      return socket;
     }
   };
 };

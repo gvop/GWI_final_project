@@ -70,22 +70,32 @@ console.log('Server started on ' + port);
 
 // Integrate socket
 var io = require('socket.io')(server);
+var users = {};
 
 io.on("connect", function(socket){
 
-  socket.on("login", function(user){
-    user.join(user._id)
-    user.friends.forEach(function(friend){
-      socket.join(friend);
-      console.log(friend + " was joined...")
-    })
-    io.emit("subscribed")
+  socket.on("login", function(data){
+    console.log(data.user_id, data.socketId)
+    users[data.user_id] = data.socketId;
+    console.log(users)
+    socket.broadcast.emit("tell-others", data)
+
+    // user.join(user._id)
+    // console.log(user)
+    // user.friends.forEach(function(friend){
+    //   console.log("this is the friends id:")
+    //   console.log(friend)
+    //   socket.join(friend);
+    //   console.log(friend + " was joined...")
+    // })
+    // io.emit("subscribed", user)
+    // io.to('talking').emit('messageToAllFriends', user)
   })
 
   socket.on("message-friend", function(data){
-    console.log("message-friend:" + data.friend)
-    // socket.broadcast.to(socketid).emit('message', 'for your eyes only');
-    socket.broadcast.to(data.friend._id).emit('message-to-friend', data);
+    console.log("message-friend:", data.friend._id)
+    var socketId = users[data.friend._id];
+    socket.broadcast.to(socketId).emit('personalMessage', data)
   })
 
   // socket.on("comment-added", function(data){

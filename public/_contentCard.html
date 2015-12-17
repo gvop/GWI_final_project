@@ -13,7 +13,7 @@
       </div>
 
       <div id="popop_{{$index}}" class="modal modal-fixed-footer">
-        <div id="commentbox_{{$index}}" class="modal-content">
+        <div class="modal-content">
 
           <h2>{{ content.title }}</h2>
 
@@ -25,12 +25,15 @@
             </div>
           </form>
 
-          <div class="col s12 top-margin no-padding">
+          <div class="col s12 top-margin no-padding" id="commentbox_{{$index}}">
             <h2 class="all-left">Comments</h2>
-            <p class="all-left" ng-repeat="comment in content.comments">{{ comment.comment }}</p>
+            <p id="popop_{{$index}}_comment" class="all-left" ng-repeat="comment in content.comments">{{ comment.comment }}</p>
           </div>
 
-          <div id="popop_{{$index}}_info" class="color-black"></div>
+          <div class="col s12 top-margin no-padding">
+            <h2>Info</h2>
+            <div id="popop_{{$index}}_info" class="color-black"></div>
+          </div>
 
         </div>
 

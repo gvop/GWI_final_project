@@ -2,10 +2,14 @@
 
   <!--   <div class="logged-in-info"><h2>{{ users.user.local.fullname }}</h2></div> -->
   <!--   <div class="logged-in-info"><img ng-src="{{ users.user.local.image }}"></div> -->
-  <h2>Your Watchlist!</h2>
-  <div class="row">
+  
+  <div class="row" id="playlist">
 
-    <div class="col s12 m4 l3" ng-repeat="content in users.user.contents track by $index">
+      <div class="col s12">
+        <h2>Your Watch list!</h2>
+      </div>
+
+    <div class="col s12 m3 l2" ng-repeat="content in users.user.contents track by $index">
 
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
@@ -21,24 +25,37 @@
         </div>
       </div>
     </div>
+  </div>
 
+  <div class="row" id="friendslist">
+    <div class="col s12">
 
-    <div class="col s12 m3" ng-repeat="friend in users.user.friends">
+        <h2>Your Friends list!</h2>
 
-      <p>{{friend.local.fullname}}<span class="message_button">*message</span></p>
+    </div>
+    
+    <div class="col s12 m3" ng-repeat="friend in users.user.friends track by $index">
 
-      <form class="col s12 no-padding" ng-submit="users.sendMessageToFriend(friend, messageText)">
+      <p>{{friend.local.fullname}}
+        <span class="message_button click">
+          <i ng-click="users.messageForm()" class="fa fa-envelope-o"></i>
+          <i ng-click="users.removeFriend(friend)" class="fa fa-trash-o"></i>
+        </span>
+      </p>
+
+      <form class="col s12 no-padding form-hide" data-ng-init="users.hideForm()" ng-submit="users.sendMessageToFriend(friend, messageText)">
         <div class="input-field col s12 no-padding">
           <label  class="no-padding all-left" for="textarea1">Comment</label>
           <input  class="message" type="text" ng-model="messageText" name="messageText"/>
-          <input  class="btn"     type="submit" id="submit" value="Send Message" />
+          <input type="submit" id="submit" value="Send Message" />
         </div>
       </form>
 
     </div>
-
-
-
-
   </div>
+
+
+
+
+</div>
 </div>

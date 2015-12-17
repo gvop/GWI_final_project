@@ -32,8 +32,8 @@ function usersUpdate(req, res){
     user.save(function(err) {
      if (err) return res.status(500).json({message: "Something went wrong!"});
 
-      res.status(201).json({message: 'User successfully updated.', user: user});
-    });
+     res.status(201).json({message: 'User successfully updated.', user: user});
+   });
   });
 }
 
@@ -41,7 +41,7 @@ function usersDelete(req, res){
   User.findByIdAndRemove({_id: req.params.id}, function(err){
    if (err) return res.status(404).json({message: 'Something went wrong.'});
    res.status(200).json({message: 'User has been successfully deleted'});
-  });
+ });
 }
 
 
@@ -60,22 +60,32 @@ function deleteContent(req,res){
 
   var userId = req.body.userId
   var contentId = req.body.contentId
+
   User.findByIdAndUpdate({_id: userId }, {$pull: {"contents": contentId }}, function(error){
     if(error) return res.status(403).send({message: 'Could not add content b/c' + error});
     return res.status(200).json({message: 'has been deleted of your list'});
   });
-
 }
 
 function addFriend(req,res){
-
   var userId    = req.body.user._id
-
   var friendId  = req.body.friend._id
-
   User.findByIdAndUpdate({_id: userId }, {$push: {"friends": friendId }}, function(error, user){
     if(error) return res.status(403).send({message: 'Could not add friend b/c' + error});
     return res.status(200).json({message: 'has been added to your list', user:user});
+  });
+}
+
+function deleteFriend(req,res){
+
+  var userId    = req.body.userId
+  var friendId  = req.body.friendId 
+
+
+  User.findByIdAndUpdate({_id: userId }, {$pull: {"friends": friendId }}, function(error){
+    console.log(error)
+    if(error) return res.status(403).send({message: 'Could not add content b/c' + error});
+    return res.status(200).json({message: 'has been deleted of your list'});
   });
 }
 
@@ -87,5 +97,6 @@ module.exports = {
   usersDelete:    usersDelete,
   addContent:     addContent,
   deleteContent:  deleteContent,
-  addFriend:      addFriend
+  addFriend:      addFriend,
+  deleteFriend:   deleteFriend
 }

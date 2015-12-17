@@ -5,6 +5,8 @@ angular
 UsersController.$inject = ['User', 'TokenService', '$state', 'CurrentUser', '$auth', "$window", "socket"];
 function UsersController(User, TokenService, $state, CurrentUser, $auth, $window, socket){
 
+  console.log("RUNNING ONCE?!")
+
   var self = this;
 
   self.all                  = [];
@@ -20,6 +22,9 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
   self.addFriend            = addFriend;
   self.sendMessageToFriend  = sendMessageToFriend;
   self.checkFriends         = checkFriends;
+  self.removeFriend         = removeFriend;
+  self.hideForm             = hideForm;
+  self.messageForm          = messageForm;
 
 
   self.authenticate = function(provider) {
@@ -48,6 +53,10 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
   return getUser(self.creator)
   }
 
+  function hideForm(){
+    $(".form-hide").hide()
+  }
+
   function checkFriends(){
     var id = self.creator._id
     User.get({id : id}, function(data) {
@@ -67,7 +76,13 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
       self.getUsers();
       self.user = TokenService.decodeToken();
       CurrentUser.saveUser(self.user)
-      socket.emit("login", self.user);
+      var socketId = socket.socket().io.engine.id;
+      // console.log(socketId)
+      var data = {
+        user_id: self.user._id,
+        socketId: socketId
+      }
+      socket.emit("login", data);
       $state.go('home');
     }
     // console.log(res);
@@ -91,6 +106,7 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
     self.all  = [];
     self.user = {};
     CurrentUser.clearUser();
+    $window.location.reload();
   }
 
   // Checks if the user is logged in
@@ -119,39 +135,68 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
     }
 
 
+    function removeFriend(friend){
+      console.log(friend)
+      $(event.target.parentElement.parentElement.parentElement).fadeOut();
 
-  function sendMessageToFriend(friend,message){
-    console.log(friend)
+      var data = {
+        userId: self.creator._id,
+        friendId: friend._id
+      }
+
+      User.deleteFriend(data)
+    }
+
+  function messageForm(){
+    $(event.target.parentElement.parentElement).next().toggle()
+  }
+
+
+  function sendMessageToFriend(friend, message){
 
     var messagePackage = {
-      friend : friend._id,
+      friend : friend,
       message: message
     }
 
     socket.emit("message-friend", messagePackage);
 
-    Materialize.toast("Send message: " + message + " to: " + friend.local.username , 4000)
+    // Materialize.toast("Send message: " + message + " to: " + friend.local.username , 4000)
     $(".message").val(function() {
       return this.defaultValue;
     });
 
   }
 
-  socket.on("message-to-friend", function(data) {
-    console.log(data)
-  })
+  // socket.on("message-to-friend", function(data) {
+  //   console.log(data)
+  // })
 
   socket.on("connect", function(){
     console.log("connected")
+    if (self.creator) {
+      var socketId = socket.socket().io.engine.id;
+      var data = {
+        user_id: self.creator._id,
+        socketId: socketId
+      }
+      socket.emit("login", data);
+    }
   })
 
-  socket.on("subscribed", function(){
-    console.log(socket);
+  // socket.on("subscribed", function(user){
+  //   var name = user.local.fullname
+  //   return  Materialize.toast(name + " is logged in!", 8000);
+  // })
+
+  socket.on("personalMessage", function(data){
+    var sender = data.friend.local.fullname
+    return  Materialize.toast(sender + ": <br> " +data.message, 8000);
   })
 
-
-
-
+  socket.on("tell-others", function(data){
+    socket.emit("login", data);
+  })
 
 
   // socket.on("message-to-friend", function(data) {
@@ -164,20 +209,6 @@ function UsersController(User, TokenService, $state, CurrentUser, $auth, $window
   //   console.log(data)
   //   Materialize.toast(data, 4000);
   // })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   // Checks if the user is logged in, runs every time the page is loaded

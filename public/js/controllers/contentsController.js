@@ -84,7 +84,7 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
 
   //REMOVE PROGRAMM FOR UR LIST
   self.remove = function(content){
-    $(event.target.parentElement.parentElement).hide();
+    $(event.target.parentElement.parentElement).fadeOut();
 
     var data = {
       userId: self.creator._id,
@@ -112,8 +112,8 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
       self.commentText = " ";
       $('#commentbox_' + id).append("<p>"+ comment +"</p>")
       console.log("line 109")
-      // socket.emit("comment-added", comment);
-      // socket.emit("interested-channel", content);
+      socket.emit("comment-added", comment);
+      socket.emit("interested-channel", content);
     })
   }
 
@@ -137,16 +137,16 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
   self.getUsers();
 
 
-  // socket.on("connect", function(){
-  //   console.log("connected")
-  // })
+  socket.on("connect", function(){
+    console.log("connected")
+  })
 
-  // socket.on("everyone-apart-from-me", function(data) {
-  //   console.log(data)
-  //   Materialize.toast(data, 4000);
-  // })
+  socket.on("everyone-apart-from-me", function(data) {
+    console.log(data)
+    Materialize.toast(data, 4000);
+  })
 
-  // socket.on("message", function(data) {
-  //   Materialize.toast(data, 4000);
-  // })
+  socket.on("message", function(data) {
+    Materialize.toast(data, 4000);
+  })
 }
