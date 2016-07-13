@@ -33,7 +33,7 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
     if(content.network === "BBC") {
       $('#popop_'+ index + "_info").append(content.synopsis)
     } else {
-      $.getJSON('http://en.wikipedia.org/w/api.php?action=parse&format=json&callback=?', {page:content.title, prop:'text', uselang:'en'}, function(data){ 
+      $.getJSON('http://en.wikipedia.org/w/api.php?action=parse&format=json&callback=?', {page:content.title, prop:'text', uselang:'en'}, function(data){
         var splitText = "<p><i><b>"
         var str = data.parse.text['*']
         var res = str.split(splitText);
@@ -71,7 +71,7 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
 
     var data = {
       userId: userId,
-      contentId: contentId 
+      contentId: contentId
     }
 
     User.addContent(data, function(data){
@@ -150,3 +150,4 @@ function ContentsController(Content, User, CurrentUser, TokenService, $window, s
     Materialize.toast(data, 4000);
   })
 }
+git merge feature/frontEndAngular
